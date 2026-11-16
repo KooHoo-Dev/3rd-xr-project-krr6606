@@ -3,10 +3,13 @@
 //
 // 하는 일
 //   1) 생성된 텍스처/FBX의 임포트 설정 (docs/assets/import-guide.md 1~3번을 자동으로)
-//   2) M_Palette, M_Dartboard 머티리얼 생성 후 FBX에 연결
-//   3) 새 씬에 방 환경 + 게임 준비 배치 + XR Origin + UI(모양만) 배치, 조명/반사 설정
+//   2) M_Palette 머티리얼 생성 후 FBX에 연결
+//   3) 새 씬에 게임 준비 배치 + XR Origin + UI(모양만) 배치, 조명/반사 설정
 // 하지 않는 일 (직접 구현할 부분)
-//   - 다트 잡기/던지기(XR Grab Interactable, Rigidbody), 점수 판정, 버튼 동작(onClick)
+//   - 다트 잡기/던지기(XR Grab Interactable, Rigidbody), 풍선 판정, 버튼 동작(onClick)
+//
+// 환경 = 야외 여름 계곡(Valley.fbx), 다트통 받침 = 통나무(LogStand.fbx), 물풍선 4종은 예시 배치만 (docs/decisions/003).
+// 실내 방 · 다트판 · 바 테이블은 기획 전환으로 삭제했다.
 //
 // 배치 수치는 Tools/AssetGen/layout.py 와 같게 유지한다.
 using System.Collections.Generic;
@@ -29,9 +32,8 @@ public static class DemoSceneBuilder
     const string RigPath = "Assets/Samples/XR Interaction Toolkit/3.5.1/Starter Assets/Prefabs/XR Origin (XR Rig).prefab";
     const string FontPath = "Assets/99. External Assets/Font/Noto_Sans_KR/NotoSansKR-Regular SDF.asset";
 
-    static readonly Vector3 BoardCenter = new Vector3(0f, 1.73f, 2.0f);
     static readonly Vector3 PlayerPos = new Vector3(0f, 0f, -0.25f);
-    static readonly Color Warm = new Color(1f, 0.83f, 0.64f);
+    static readonly Color Sun = new Color(1f, 0.95f, 0.85f);
     static readonly Color Chalk = new Color(0.92f, 0.91f, 0.87f);
     static readonly Color Pink = new Color(1f, 0.25f, 0.55f);
 
@@ -44,22 +46,19 @@ public static class DemoSceneBuilder
 
     static readonly Item[] Layout =
     {
-        new Item("DartRoom",       Vector3.zero,                      0, "Environment", true),
-        new Item("PendantLamp",    new Vector3(0f, 3f, 1.25f),        0, "Environment", true),
-        new Item("PendantLamp",    new Vector3(-1.45f, 3f, -0.25f),   0, "Environment", true),
-        new Item("BarTable",       new Vector3(-1.45f, 0f, -0.25f),   0, "Environment", true),
-        new Item("BarStool",       new Vector3(-1.45f, 0f, -0.85f),   0, "Environment", true),
-        new Item("BarStool",       new Vector3(-1.05f, 0f, 0.3f),     0, "Environment", true),
-        new Item("PosterFrame",    new Vector3(2f, 1.65f, 0.9f),     90, "Environment", true),
-        new Item("PosterFrame",    new Vector3(-2f, 1.65f, 1.1f),   -90, "Environment", true),
-        new Item("NeonSign_Title", new Vector3(0f, 2.55f, 2.1f),      0, "Environment", true),
-        new Item("NeonSign_777",   new Vector3(1.15f, 1.75f, 2.1f),   0, "Environment", true),
-        new Item("BoardBackboard", BoardCenter,                       0, "Environment", true),
+        new Item("Valley",         Vector3.zero,                      0, "Environment", true),
         new Item("OcheLine",       Vector3.zero,                      0, "Game", true),
-        new Item("Dartboard",      BoardCenter,                       0, "Game", true),
-        new Item("ScoreBoard",     new Vector3(-1.15f, 1.62f, 2.075f),0, "Game", true),
-        new Item("BarTable",       new Vector3(0.55f, 0f, -0.1f),     0, "Game", true),
+        new Item("LogStand",       new Vector3(0.55f, 0f, -0.1f),     0, "Game", true),
         new Item("DartHolder",     new Vector3(0.55f, 1f, -0.1f),    20, "Game", true),
+    };
+
+    // 물풍선 예시 배치 (일렬 대형 하나 + 금빛 하나). 게임에서는 코드가 띄우므로 정적이 아니다
+    static readonly Item[] Balloons =
+    {
+        new Item("Balloon_Red",    new Vector3(-0.25f, 1.45f, 1.30f), 0, "Game", false),
+        new Item("Balloon_Blue",   new Vector3(-0.25f, 1.50f, 1.65f), 0, "Game", false),
+        new Item("Balloon_Green",  new Vector3(-0.25f, 1.55f, 1.95f), 0, "Game", false),
+        new Item("Balloon_Gold",   new Vector3(0.60f, 1.85f, 1.75f),  0, "Game", false),
     };
 
     [MenuItem("Tools/Dart Challenge/Build Demo Scene")]
@@ -72,24 +71,25 @@ public static class DemoSceneBuilder
             return;
 
         SetupTextures();
-        Material palette, board;
-        SetupMaterials(out palette, out board);
-        SetupModels(palette, board);
+        var palette = SetupMaterials();
+        SetupModels(palette);
 
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         var groups = new Dictionary<string, Transform>();
         foreach (var g in new[] { "Environment", "Game", "Lighting", "XR", "UI" })
             groups[g] = new GameObject(g).transform;
 
-        GameObject holder = null;
+        GameObject holder = null, valley = null;
         foreach (var it in Layout)
         {
             var go = Spawn(it.model, it.pos, it.rotY, groups[it.group]);
             if (it.isStatic) SetStatic(go);
             if (it.model == "DartHolder") holder = go;
+            if (it.model == "Valley") valley = go;
         }
         PlaceDarts(holder, groups["Game"]);
-        AddRoomColliders(groups["Environment"]);
+        PlaceBalloons(groups["Game"]);
+        AddGroundCollider(valley);
         SetupLighting(groups["Lighting"]);
         var cam = SetupXR(groups["XR"]);
         SetupUI(groups["UI"], cam);
@@ -122,11 +122,6 @@ public static class DemoSceneBuilder
             ti.textureCompression = TextureImporterCompression.Uncompressed;
             ti.SaveAndReimport();
         }
-        var board = (TextureImporter)AssetImporter.GetAtPath($"{Art}/Textures/T_Dartboard_Albedo.png");
-        board.anisoLevel = 4;
-        board.maxTextureSize = 2048;
-        board.SaveAndReimport();
-
         foreach (var n in new[] { "UI_RoundedRect", "UI_Circle" })
         {
             var ti = (TextureImporter)AssetImporter.GetAtPath($"{Art}/UI/{n}.png");
@@ -139,13 +134,13 @@ public static class DemoSceneBuilder
         }
     }
 
-    static void SetupMaterials(out Material palette, out Material board)
+    static Material SetupMaterials()
     {
         var dir = Art + "/Materials";
         Directory.CreateDirectory(dir);
         var lit = Shader.Find("Universal Render Pipeline/Lit");
 
-        palette = LoadOrCreate(dir + "/M_Palette.mat", lit);
+        var palette = LoadOrCreate(dir + "/M_Palette.mat", lit);
         palette.SetTexture("_BaseMap", Tex("T_Palette_Albedo"));
         palette.SetColor("_BaseColor", Color.white);
         palette.SetTexture("_MetallicGlossMap", Tex("T_Palette_MS"));
@@ -157,17 +152,11 @@ public static class DemoSceneBuilder
         palette.EnableKeyword("_EMISSION");
         palette.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
         EditorUtility.SetDirty(palette);
-
-        board = LoadOrCreate(dir + "/M_Dartboard.mat", lit);
-        board.SetTexture("_BaseMap", Tex("T_Dartboard_Albedo"));
-        board.SetColor("_BaseColor", Color.white);
-        board.SetFloat("_Metallic", 0f);
-        board.SetFloat("_Smoothness", 0.1f);
-        EditorUtility.SetDirty(board);
         AssetDatabase.SaveAssets();
+        return palette;
     }
 
-    static void SetupModels(Material palette, Material board)
+    static void SetupModels(Material palette)
     {
         foreach (var path in AssetDatabase.FindAssets("t:Model", new[] { Art + "/Models" }))
         {
@@ -179,7 +168,6 @@ public static class DemoSceneBuilder
             mi.importLights = false;
             mi.generateSecondaryUV = true;   // 라이트맵 굽기용 UV2
             mi.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), "M_Palette"), palette);
-            mi.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), "M_Dartboard"), board);
             mi.SaveAndReimport();
         }
     }
@@ -208,63 +196,61 @@ public static class DemoSceneBuilder
         }
     }
 
-    static void AddRoomColliders(Transform env)
+    static void PlaceBalloons(Transform game)
     {
-        var root = new GameObject("RoomColliders").transform;
-        root.SetParent(env, false);
-        Box(root, "Floor",   new Vector3(0f, -0.05f, 0.1f),  new Vector3(4f, 0.1f, 4f));
-        Box(root, "Ceiling", new Vector3(0f, 3.05f, 0.1f),   new Vector3(4f, 0.1f, 4f));
-        Box(root, "Wall_Back",  new Vector3(0f, 1.5f, 2.15f),  new Vector3(4f, 3f, 0.1f));
-        Box(root, "Wall_Front", new Vector3(0f, 1.5f, -1.95f), new Vector3(4f, 3f, 0.1f));
-        Box(root, "Wall_Left",  new Vector3(-2.05f, 1.5f, 0.1f), new Vector3(0.1f, 3f, 4f));
-        Box(root, "Wall_Right", new Vector3(2.05f, 1.5f, 0.1f),  new Vector3(0.1f, 3f, 4f));
+        var parent = new GameObject("Balloons_Example").transform;
+        parent.SetParent(game, false);
+        foreach (var it in Balloons)
+            Spawn(it.model, it.pos, it.rotY, parent);
     }
 
-    static void Box(Transform parent, string name, Vector3 center, Vector3 size)
+    // 지면에만 MeshCollider (떨어진 다트가 땅에 멈추게). 바위 · 나무 · 산은 충돌 없음
+    static void AddGroundCollider(GameObject valley)
     {
-        var go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        go.transform.localPosition = center;
-        go.AddComponent<BoxCollider>().size = size;
-        go.isStatic = true;
+        var ground = FindDeep(valley.transform, "Ground");
+        if (ground == null) { Debug.LogWarning("Valley 안에 Ground 없음"); return; }
+        ground.gameObject.AddComponent<MeshCollider>();
+
+        // 먼 산은 너무 커서 라이트맵을 크게 키우므로 굽기에서 뺀다 (환경광만 받음)
+        var mountains = FindDeep(valley.transform, "Mountains");
+        if (mountains != null)
+        {
+            var flags = GameObjectUtility.GetStaticEditorFlags(mountains.gameObject) & ~StaticEditorFlags.ContributeGI;
+            GameObjectUtility.SetStaticEditorFlags(mountains.gameObject, flags);
+        }
     }
 
     // ------------------------------------------------------------------ 조명
     static void SetupLighting(Transform root)
     {
+        // 야외: 해(Directional) 하나 + 하늘색 환경광 + Unity 기본 하늘(Skybox)
+        RenderSettings.skybox = AssetDatabase.GetBuiltinExtraResource<Material>("Default-Skybox.mat");
         RenderSettings.ambientMode = AmbientMode.Trilight;
-        RenderSettings.ambientSkyColor = new Color(0.30f, 0.27f, 0.24f);
-        RenderSettings.ambientEquatorColor = new Color(0.22f, 0.19f, 0.16f);
-        RenderSettings.ambientGroundColor = new Color(0.12f, 0.09f, 0.07f);
+        RenderSettings.ambientSkyColor = new Color(0.62f, 0.74f, 0.90f);
+        RenderSettings.ambientEquatorColor = new Color(0.50f, 0.56f, 0.52f);
+        RenderSettings.ambientGroundColor = new Color(0.28f, 0.26f, 0.22f);
         RenderSettings.fog = false;
 
-        // 다트판 조명: 펜던트 전구 위치에서 다트판을 비춘다 (Quest 설정은 추가 조명 그림자를 끄므로 그림자는 PC 에디터에서만 보임)
-        var spot = AddLight(root, "Spot_Board", LightType.Spot, new Vector3(0f, 2.47f, 1.25f), Warm, 4f, 4f, LightmapBakeType.Mixed);
-        spot.transform.LookAt(BoardCenter);
-        spot.spotAngle = 75f;
-        spot.innerSpotAngle = 45f;
-        spot.shadows = LightShadows.Soft;
-
-        AddLight(root, "Point_Room", LightType.Point, new Vector3(0.3f, 2.6f, -0.8f), new Color(1f, 0.9f, 0.8f), 1.6f, 6f, LightmapBakeType.Mixed);
-        AddLight(root, "Point_LeftLamp", LightType.Point, new Vector3(-1.45f, 2.42f, -0.25f), Warm, 1.2f, 3f, LightmapBakeType.Mixed);
-        // 네온 번짐은 굽기 전용 (실시간 조명 수를 줄이려고)
-        AddLight(root, "Point_Neon", LightType.Point, new Vector3(0f, 2.55f, 1.85f), Pink, 0.8f, 1.6f, LightmapBakeType.Baked);
+        var sun = AddLight(root, "Sun", LightType.Directional, new Vector3(0f, 5f, 0f), Sun, 1.3f, 0f, LightmapBakeType.Mixed);
+        sun.transform.rotation = Quaternion.Euler(50f, -30f, 0f);   // 플레이어 오른쪽 뒤 위에서 앞쪽으로 비춤
+        sun.shadows = LightShadows.Soft;
+        RenderSettings.sun = sun;
 
         var probeGo = new GameObject("ReflectionProbe");
         probeGo.transform.SetParent(root, false);
-        probeGo.transform.position = new Vector3(0f, 1.5f, 0.1f);
+        probeGo.transform.position = new Vector3(0f, 1.5f, 1.0f);
         var probe = probeGo.AddComponent<ReflectionProbe>();
         probe.mode = ReflectionProbeMode.Custom;
-        probe.size = new Vector3(4f, 3f, 4f);
+        probe.size = new Vector3(30f, 15f, 30f);     // 야외라 넓게, 상자 투영은 끔
         probe.center = new Vector3(0f, 0f, 0f);
-        probe.boxProjection = true;
+        probe.boxProjection = false;
         probe.resolution = 128;
 
         var ls = new LightingSettings { name = "DartDemo_Lighting" };
         ls.bakedGI = true;
         ls.realtimeGI = false;
         ls.mixedBakeMode = MixedLightingMode.IndirectOnly;
-        ls.lightmapResolution = 12;
+        ls.lightmapResolution = 6;                   // 계곡 지형이 넓어서 실내 때(12)보다 낮춤
         ls.lightmapMaxSize = 1024;
         var lsPath = SceneDir + "/DartDemo_Lighting.lighting";
         Directory.CreateDirectory(SceneDir);
@@ -327,27 +313,20 @@ public static class DemoSceneBuilder
     {
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
         var rounded = AssetDatabase.LoadAssetAtPath<Sprite>($"{Art}/UI/UI_RoundedRect.png");
-        var circle = AssetDatabase.LoadAssetAtPath<Sprite>($"{Art}/UI/UI_Circle.png");
 
-        // 점수판: 칠판 면 바로 앞 (0.8 x 0.5 m)
+        // 점수판: 풍선 구역 왼쪽 위 (0.8 x 0.5 m). 계곡용 간판 모델이 생기면 그 면 앞으로 옮긴다
         var score = MakeCanvas(root, "UI_ScoreBoard", new Vector3(-1.15f, 1.62f, 2.072f), 0f, new Vector2(800, 500), cam);
+        Panel(score.transform, rounded);
         Label(score, font, "점수", 46, new Vector2(0, 170), Chalk);
-        Label(score, font, "0 / 100", 120, new Vector2(0, 60), Chalk).name = "ScoreText";
-        Label(score, font, "남은 다트", 40, new Vector2(0, -70), Chalk);
-        var dots = Ui("DartsLeft", score.transform, new Vector2(0, -150), new Vector2(560, 60));
-        for (int i = 0; i < 7; i++)
-        {
-            var dot = Ui($"Dot_{i + 1}", dots, new Vector2(-240 + i * 80, 0), new Vector2(46, 46));
-            var img = dot.gameObject.AddComponent<Image>();
-            img.sprite = circle;
-            img.color = Chalk;
-        }
+        Label(score, font, "0 / 300", 120, new Vector2(0, 60), Chalk).name = "ScoreText";
+        Label(score, font, "남은 시간", 40, new Vector2(0, -70), Chalk);
+        Label(score, font, "60", 72, new Vector2(0, -150), Chalk).name = "TimeText";
 
         // 시작 패널: 플레이어 앞 1.15 m, 눈보다 조금 아래, 위쪽으로 살짝 기울임
         var start = MakeCanvas(root, "UI_StartPanel", new Vector3(0f, 1.35f, 0.9f), 12f, new Vector2(640, 400), cam);
         Panel(start.transform, rounded);
         Label(start, font, "다트 챌린지", 72, new Vector2(0, 110), Color.white);
-        Label(start, font, "다트 7개로 100점을 넘겨라!\n정중앙 BULL = 777점", 34, new Vector2(0, 10), new Color(0.85f, 0.85f, 0.85f));
+        Label(start, font, "60초 안에 물풍선을 터트려 300점을 넘겨라!\n금빛 풍선 = 777점", 34, new Vector2(0, 10), new Color(0.85f, 0.85f, 0.85f));
         MakeButton(start.transform, font, rounded, "StartButton", "시작", new Vector2(0, -120));
 
         // 결과 패널: 같은 자리, 처음엔 꺼 둠
@@ -473,8 +452,8 @@ public static class DemoSceneBuilder
 
     static void LogSizeCheck()
     {
-        // 임포트 스케일 확인: 다트 길이 ≈ 0.16, 다트판 지름 ≈ 0.451 이어야 정상
-        foreach (var n in new[] { "Dart_01", "Dartboard" })
+        // 임포트 스케일 확인: 다트 길이 ≈ 0.16, 빨강 풍선 가로 ≈ 0.35, 금빛 풍선 가로 ≈ 0.12 이어야 정상
+        foreach (var n in new[] { "Dart_01", "Balloon_Red", "Balloon_Gold" })
         {
             var go = GameObject.Find(n);
             if (go == null) continue;

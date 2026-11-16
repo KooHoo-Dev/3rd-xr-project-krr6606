@@ -1,6 +1,6 @@
-"""다트통 (DartHolder.fbx) + 바 테이블 (BarTable.fbx)
+"""다트통 (DartHolder.fbx) + 통나무 받침대 (LogStand.fbx)
 
-피벗은 둘 다 바닥 중심. 테이블 윗면 높이 = 1.0 m → 다트통을 (0, 1.0, 0)에 올리면 된다.
+피벗은 둘 다 바닥 중심. 받침대 윗면 높이 = 1.0 m → 다트통을 (0, 1.0, 0)에 올리면 된다.
 다트통 Slot_01~07 = 꽂힌 다트의 '촉 끝' 위치. 다트(피벗 = 촉 끝)를 Slot 위치에 두고 촉이 아래를 향하게 회전.
 """
 import math
@@ -87,26 +87,46 @@ def make_holder():
     return holder
 
 
-def make_table():
+def make_log_stand():
+    """통나무 받침대: 굵은 통나무를 세우고 윗면을 평평하게 자른 모양 (윗면 높이 = TABLE_H).
+    회전체로 만든 뒤 각도마다 반지름을 조금씩 바꿔 나무껍질의 울퉁불퉁함을 낸다."""
     mb = C.MeshBuilder()
-    top_t = 0.03
-    prof = C.round_profile([
-        (0.0, 0.0, "rubber"),
-        (0.0, 0.20, "metal_black"),
-        (0.014, 0.20, "metal_black"),
-        (0.030, 0.10, "metal_black"),
-        (0.036, 0.024, "metal_black"),
-        (TABLE_H - top_t - 0.03, 0.024, "metal_black"),
-        (TABLE_H - top_t - 0.01, 0.070, "metal_black"),
-        (TABLE_H - top_t, 0.070, "wood_mid"),
-        (TABLE_H - top_t, 0.24, "wood_mid"),
-        (TABLE_H, 0.24, "wood_light"),
-        (TABLE_H, 0.225, "wood_light"),
-        (TABLE_H, 0.12, "wood_light"),
-        (TABLE_H, 0.0, "wood_light"),
-    ], 0.006, 3)
-    C.lathe(mb, prof, seg=48, axis="Z")
-    return mb.build("BarTable", sharp_deg=40)
+    R = 0.17
+    prof = [
+        (0.0, 0.0, "bark_dark"),
+        (0.0, R + 0.06, "bark_dark"),        # 뿌리 쪽으로 퍼짐
+        (0.05, R + 0.035, "bark_dark"),
+        (0.14, R + 0.005, "bark"),
+        (0.45, R, "bark"),
+        (0.80, R - 0.005, "bark"),
+        (TABLE_H - 0.02, R - 0.005, "bark"),
+        (TABLE_H, R - 0.012, "wood_ring"),   # 껍질 안쪽 테두리
+        (TABLE_H, R - 0.030, "wood_cut"),
+        (TABLE_H, R - 0.070, "wood_ring"),   # 나이테 한 줄
+        (TABLE_H, R - 0.080, "wood_cut"),
+        (TABLE_H, 0.0, "wood_cut"),
+    ]
+    C.lathe(mb, prof, seg=24, axis="Z")
+    obj = mb.build("LogStand", sharp_deg=50)
+    me = obj.data
+    for v in me.vertices:                     # 각도에 따라 반지름을 흔든다 (윗면 높이는 그대로)
+        a = math.atan2(v.co.y, v.co.x) + 0.5 * v.co.z      # 높이에 따라 살짝 비틀어 결이 기울게
+        k = 1.0 + 0.045 * math.sin(5 * a + 1.0) + 0.03 * math.sin(9 * a + 2.0) + 0.02 * math.sin(17 * a)
+        v.co.x *= k
+        v.co.y *= k
+    # 껍질 면을 각도마다 번갈아 어둡게 칠해 세로 골을 표현 (팔레트 UV만 바꾼다)
+    uv = me.uv_layers.active.data
+    bark_uv, dark_uv = C.palette_uv("bark"), C.palette_uv("bark_dark")
+    for poly in me.polygons:
+        u0 = uv[poly.loop_start].uv
+        if abs(u0[0] - bark_uv[0]) > 1e-4 or abs(u0[1] - bark_uv[1]) > 1e-4:
+            continue
+        c = poly.center
+        if math.sin(7 * math.atan2(c.y, c.x) + 3.0 * c.z) > 0.35:
+            for li in poly.loop_indices:
+                uv[li].uv = dark_uv
+    me.update()
+    return obj
 
 
 def place_darts(holder):
@@ -129,9 +149,9 @@ if __name__ == "__main__":
     C.render_previews([holder] + darts, "DartHolder", [("hero", 30, 28)], ground=True, fill=0.9)
 
     C.reset()
-    table = make_table()
-    C.export_fbx(table, "BarTable.fbx")
+    table = make_log_stand()
+    C.export_fbx(table, "LogStand.fbx")
     holder = make_holder()
     holder.location.z = TABLE_H
     darts = place_darts(holder)
-    C.render_previews([table, holder] + darts, "BarTable_set", [("hero", 30, 12)], ground=True, fill=1.05)
+    C.render_previews([table, holder] + darts, "LogStand_set", [("hero", 30, 12)], ground=True, fill=1.05)

@@ -62,6 +62,36 @@ PALETTE = {
     "neon_cyan":    ("#7FF3FF", 0.0, 0.60, "#2EE6FF"),
     "bulb":         ("#FFF1D6", 0.0, 0.60, "#FFD9A0"),
     "acrylic":      ("#0E0F12", 0.0, 0.90),
+    # --- 4단계: 물풍선 (docs/decisions/003) ---
+    "balloon_red":   ("#E8323C", 0.0, 0.72),
+    "balloon_blue":  ("#2F7DE1", 0.0, 0.72),
+    "balloon_green": ("#3DBE4E", 0.0, 0.72),
+    "balloon_gold":  ("#F2B630", 0.85, 0.82, "#4A3000"),
+    # --- 4단계: 통나무 받침대 ---
+    "bark":         ("#5B4030", 0.0, 0.20),
+    "bark_dark":    ("#3E2B20", 0.0, 0.15),
+    "wood_cut":     ("#C99B63", 0.0, 0.30),
+    "wood_ring":    ("#A8784A", 0.0, 0.30),
+    # --- 4단계: 야외 여름 계곡 ---
+    "pebble_a":     ("#A79E91", 0.0, 0.25),
+    "pebble_b":     ("#8C8478", 0.0, 0.25),
+    "pebble_c":     ("#BDB5A6", 0.0, 0.25),
+    "riverbed":     ("#5E6B5E", 0.0, 0.30),
+    "sand":         ("#C9B58E", 0.0, 0.15),
+    "grass_a":      ("#5E9A3C", 0.0, 0.12),
+    "grass_b":      ("#4C8433", 0.0, 0.12),
+    "grass_c":      ("#6FAA45", 0.0, 0.12),
+    "rock_a":       ("#7D7A72", 0.0, 0.20),
+    "rock_b":       ("#66635C", 0.0, 0.20),
+    "rock_moss":    ("#5F7046", 0.0, 0.15),
+    "cliff":        ("#857F72", 0.0, 0.20),
+    "water":        ("#3FA3A8", 0.0, 0.92),
+    "leaf_a":       ("#3E7D32", 0.0, 0.15),
+    "leaf_b":       ("#2F6A2C", 0.0, 0.15),
+    "leaf_c":       ("#58963A", 0.0, 0.15),
+    "trunk":        ("#5A4232", 0.0, 0.20),
+    "mountain_a":   ("#6F9A8A", 0.0, 0.10),
+    "mountain_b":   ("#86AEA0", 0.0, 0.10),
 }
 GRID = 16
 PAL_SIZE = 256
@@ -356,9 +386,6 @@ def get_material(name):
         _textured(mat, os.path.join(TEXTURES, "T_Palette_Albedo.png"),
                   os.path.join(TEXTURES, "T_Palette_MS.png"), "Closest",
                   emi_path=os.path.join(TEXTURES, "T_Palette_Emission.png"))
-    elif name == "M_Dartboard":
-        _textured(mat, os.path.join(TEXTURES, "T_Dartboard_Albedo.png"), None, "Linear",
-                  roughness=0.88)
     return mat
 
 

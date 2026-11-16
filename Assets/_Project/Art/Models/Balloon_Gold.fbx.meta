@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: d7dfacc63de4eb146864b2f3cecb7255
+guid: 0e4a27f4db5853f41b7efcee8b58b2b3
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_Dartboard
-    second: {fileID: 2100000, guid: 41becc8bd4a89964da60486ae43bc14b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

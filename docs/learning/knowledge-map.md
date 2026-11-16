@@ -15,7 +15,7 @@ Claude가 설명 수준을 맞추기 위해 읽는 파일입니다. 사용자가
 | Unity | Prefab | ? | | |
 | Unity | MonoBehaviour 생명주기 (Awake/Start/Update) | ? | | |
 | Unity | 인스펙터에서 참조 연결 | ? | | |
-| 물리 | Rigidbody (isKinematic, velocity) | ? | | |
+| 물리 | Rigidbody (isKinematic, velocity) | 2 | 꽂힌 다트는 isKinematic을 켜야 물리 영향 없이 그대로 있다고 직접 설명함 (velocity는 아직 미확인) | 2026-11-16 |
 | 물리 | Collider · Trigger · OnCollision/OnTrigger 이벤트 | ? | | |
 | UI | Canvas · TextMeshPro · Button | ? | | |
 | XRI | XR Origin · 컨트롤러 구성 | ? | | |
@@ -24,5 +24,7 @@ Claude가 설명 수준을 맞추기 위해 읽는 파일입니다. 사용자가
 | XRI | Socket Interactor | ? | | |
 | XRI | 레이로 UI 누르기 (XR UI Input Module) | ? | | |
 | XRI | XR Device Simulator로 에디터 테스트 | ? | | |
+| Unity | 조명 (Directional Light) · Skybox | 2 | 사용자 본인 답: 기초는 알고 조금 만져봄 | 2026-11-16 |
+| 3D 도구 | Blender | 0 | 사용자 본인 답: 써본 적 없음. 에셋은 AI 스크립트로 만들고 미리보기 이미지로 검토 | 2026-11-16 |
 | 빌드 | Android 빌드 · Quest에 APK 설치 | ? | | |
 | Git | commit · push · branch | ? | | |

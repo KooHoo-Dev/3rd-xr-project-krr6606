@@ -130,3 +130,7 @@ desktop.ini
 /[Aa]ssets/UModelerX-Hub/
 /[Aa]ssets/UModelerX-Hub.meta
 /UModelerXPackages/
+
+# Python (Tools/AssetGen)
+__pycache__/
+*.pyc

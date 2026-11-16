@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Projectile
+  - Flame
+  - Water
+  - Destroyer
   layers:
   - Default
   - TransparentFX
@@ -12,8 +16,8 @@ TagManager:
   - Water
   - UI
   - Aquarium
-  - 
-  - 
+  - Ground
+  - Dart
   - 
   - 
   - 

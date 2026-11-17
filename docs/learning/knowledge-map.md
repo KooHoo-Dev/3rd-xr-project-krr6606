@@ -9,7 +9,7 @@ Claude가 설명 수준을 맞추기 위해 읽는 파일입니다. 사용자가
 | C# | 변수 · 조건문 · 반복문 · 함수 | ? | | |
 | C# | 클래스 · 접근 제한자(public/private) · `[SerializeField]` | ? | | |
 | C# | 리스트 · 배열 | ? | | |
-| C# | 이벤트 · 델리게이트 · 람다 | ? | | |
+| C# | 이벤트 · 델리게이트 · 람다 | 3 | `GameManager`·`WaterBalloon`의 `Action` 이벤트를 직접 작성. `OnComplete(Move)` vs `OnComplete(Move())` 차이(void는 델리게이트로 못 넘김)를 직접 답함. 콜백이 스택을 쌓지 않는지 스스로 의문 제기 | 2026-11-17 |
 | C# | 코루틴 | ? | | |
 | Unity | GameObject · Component · Transform | ? | | |
 | Unity | Prefab | ? | | |
@@ -25,6 +25,7 @@ Claude가 설명 수준을 맞추기 위해 읽는 파일입니다. 사용자가
 | XRI | 레이로 UI 누르기 (XR UI Input Module) | ? | | |
 | XRI | XR Device Simulator로 에디터 테스트 | ? | | |
 | Unity | 조명 (Directional Light) · Skybox | 2 | 사용자 본인 답: 기초는 알고 조금 만져봄 | 2026-11-16 |
+| Unity | DOTween (Sequence · SetLoops · SetLink) | 2 | 사용자 본인 답: 시퀀스와 트윈 정리는 기초를 알고 있음 | 2026-11-17 |
 | 3D 도구 | Blender | 0 | 사용자 본인 답: 써본 적 없음. 에셋은 AI 스크립트로 만들고 미리보기 이미지로 검토 | 2026-11-16 |
 | 빌드 | Android 빌드 · Quest에 APK 설치 | ? | | |
 | Git | commit · push · branch | ? | | |

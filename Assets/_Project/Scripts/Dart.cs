@@ -18,16 +18,21 @@ public class Dart : MonoBehaviour
     private bool isThrown = false;
     public bool IsThrown
     {
-        get { return isThrown; }
-        set { isThrown = value; }
-    }
+
+        get { lock (dartlock) return isThrown; }
+        set
+        {
+            lock (dartlock)   isThrown = value;  }
+        }
 
     private bool isThrownSuccess = false;
     public bool IsThrownSuccess
     {
-        get { return isThrownSuccess; }
-        set { isThrownSuccess = value; }
-    }
+        get { lock (dartlock) return isThrownSuccess; }
+        set
+        {
+            lock (dartlock)  isThrownSuccess = value;  }
+        }
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -70,9 +75,10 @@ public class Dart : MonoBehaviour
         {
             Stop();
             transform.SetPositionAndRotation(originPos, originRot);
-            IsThrown = false;
-            IsThrownSuccess = false;
         }
+         IsThrown = false;
+         IsThrownSuccess = false;
+        
     }
    private async UniTask DelayReset(float delay)
    {

@@ -1,0 +1,137 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1874137430303808865
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_Name
+      value: Balloon_Gold
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 230846462069464133}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6469404104557418896}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3905945735275656861}
+  m_SourcePrefab: {fileID: 100100000, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+--- !u!1 &1640207198850687024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+  m_PrefabInstance: {fileID: 1874137430303808865}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &230846462069464133
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640207198850687024}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.058
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6469404104557418896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640207198850687024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af0b04c32a20d87469a5eed471c65e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterBalloon
+  balloonType: 3
+  PopsVFXPrefab:
+  - {fileID: 1023409776734649043, guid: 02761778219481341897b059c8844100, type: 3}
+  - {fileID: 7602070536719820232, guid: 3ace95d3dc7f99d4ba4f03ac2cc7a6a4, type: 3}
+  BalloonScore: 1
+  riseHeight: 1.5
+  riseDuration: 1
+  hoverTime: 5
+  bobAmount: 0.1
+  bobDuration: 1
+  fallBelow: 0.5
+  fallDuration: 2
+--- !u!114 &-3905945735275656861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640207198850687024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 976eb8aaa221be647b4d86ac27856f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldBalloonMover
+  moveRange: {x: 1.5, y: 0.8}
+  minMoveTime: 0.4
+  maxMoveTime: 1.2

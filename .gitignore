@@ -134,3 +134,8 @@ desktop.ini
 # Python (Tools/AssetGen)
 __pycache__/
 *.pyc
+
+# DOTween Pro (유료 에셋, 재배포 금지): 각자 Asset Store에서 임포트
+/[Aa]ssets/Plugins/Demigiant/DOTweenPro*
+/[Aa]ssets/Plugins/Demigiant/DemiLib*
+/[Aa]ssets/Plugins/Demigiant/readme_DOTweenPro.txt*

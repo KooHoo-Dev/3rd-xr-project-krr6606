@@ -28,8 +28,8 @@
 | 3 | 야외 여름 계곡 `Valley.fbx` | `make_valley.py`. 자식 Ground · Water · Rocks · Trees · Mountains, 약 13.3k tris, 플레이어 주변 y 0 평평 | 생성됨 · 사용자 검토 대기 |
 | 3 | 점수 간판 | 계곡에 어울리는 받침 (칠판 대신). 지금은 UI 패널만 떠 있음 | 예정 · 사양 미정 |
 | 4 | 물풍선 4종 `Balloon_Red/Blue/Green/Gold.fbx` (35 / 28 / 22 / 12 cm) | 매듭 포함, 피벗 = 몸통 중심, 각 640 tris | 생성됨 · 사용자 검토 대기 |
-| 4 | 물 효과 | 터짐 튐, 올 클리어 물 쏟아짐, 바닥 물보라, 금빛 반짝이, 점수 팝업 | 예정 |
-| 4 | 사운드 | 팡(콤보는 높이만 변경), 팡파르, 금빛 팡 + 동전 소리, 풍선 떠오름 | 예정 |
+| 4 | 물 효과 `Prefabs/VFX/VFX_*.prefab` | 풍선 터짐 4종(물 튐 + 쏟아지는 물 + 바닥 물보라 + 풍선 조각, Gold는 반짝이 포함), `VFX_GoldSparkle`, `VFX_WaterSpill`(올 클리어). `VfxBuilder.cs` 메뉴로 생성 | 생성 도구 작성됨 · Unity에서 실행 및 사용자 검토 대기. 점수 팝업은 예정 |
+| 4 | 사운드 `Audio/SFX_*.wav` | Pop(콤보는 높이만 변경), GoldPop(팡 + 동전), WaterSpill, Fanfare, BalloonRise, UIClick, DartMiss. `make_sfx.py`로 합성 | 생성됨 · 사용자 청취 검토 대기 |
 
 실내 다트 바 · 다트판 · 바 테이블은 삭제했다 (003). `make_base.py`(옛 `make_room.py`)에는 던지는 선 · UI 스프라이트 · 팔레트만 남아 있다.
 

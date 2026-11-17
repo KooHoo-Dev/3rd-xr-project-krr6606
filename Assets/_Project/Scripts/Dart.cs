@@ -44,7 +44,9 @@ public class Dart : MonoBehaviour
     public void Throw(BaseInteractionEventArgs eventArgs)
     {
         rb.isKinematic = false;
-
+        //디버그용 코드
+        //rb.AddForce(eventArgs.interactableObject.transform.forward * 10f, ForceMode.Impulse);
+        
         IsThrown = true;
     }
     public void Stop()

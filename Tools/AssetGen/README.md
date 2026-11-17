@@ -24,6 +24,8 @@ AI(Claude)가 작성한 생성 스크립트입니다 (`AI-Assist: generated`). �
 | `make_base.py` | 던지는 선 OcheLine.fbx + UI 스프라이트 2종 + 팔레트(발광 포함) |
 | `make_balloons.py` | Balloon_Red/Blue/Green/Gold.fbx (피벗 = 몸통 중심) |
 | `make_valley.py` | Valley.fbx — 자식 Ground · Water · Rocks · Trees · Mountains |
+| `make_sfx.py` | 피드백 사운드 `Audio/SFX_*.wav` 7종 합성. **Blender 없이** `python Tools/AssetGen/make_sfx.py` |
+| `make_fx_textures.py` | 파티클 텍스처 `T_FX_*.png` 4장. **Blender 없이** `python Tools/AssetGen/make_fx_textures.py`. 프리팹은 Unity 메뉴 Tools > Dart Challenge > Build VFX Prefabs (`VfxBuilder.cs`) |
 | `layout.py` | 데모 씬 배치표 (Unity 좌표) — `DemoSceneBuilder.cs`와 같은 값 |
 | `make_scene_preview.py` | 배치표대로 전체 씬을 Blender에서 미리 렌더 (Scene_player / behind / valley) |
 

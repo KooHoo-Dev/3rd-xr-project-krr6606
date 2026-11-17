@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5697297476757213121}
   - component: {fileID: 8662092569026656324}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: tailCol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,9 +195,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &4103928330093458274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
-    m_Bits: 25
+    m_Bits: 513
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1

@@ -301,6 +301,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87342659}
   m_CullTransparentMesh: 1
+--- !u!1 &234199178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 234199180}
+  - component: {fileID: 234199179}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &234199179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234199178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ca12c8a055570644aa796f2c30b345c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!4 &234199180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234199178}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6013, y: 0.49971, z: 7.71952}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &240913546
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,20 +530,75 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
       propertyPath: m_Name
       value: Balloon_Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 271139052}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 271139053}
   m_SourcePrefab: {fileID: 100100000, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
 --- !u!4 &271139050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
   m_PrefabInstance: {fileID: 271139049}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &271139051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c5e0dd335fe414e965932f70f9fa5c, type: 3}
+  m_PrefabInstance: {fileID: 271139049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &271139052
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271139051}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.135
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &271139053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271139051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af0b04c32a20d87469a5eed471c65e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterBalloon
+  PopsVFXPrefab:
+  - {fileID: 1319329296141618287, guid: 7d98bad9a80291d44a6dfe27514dd6c2, type: 3}
+  BalloonScore: 1
 --- !u!1001 &291391416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -508,6 +607,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 792567023}
     m_Modifications:
+    - target: {fileID: 6879595790556237924, guid: 1ab10fbf91c26384d8ccdb66dcb55648, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8277358033414568828, guid: 1ab10fbf91c26384d8ccdb66dcb55648, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.59167403
@@ -1002,6 +1105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 544196133}
+  - component: {fileID: 544196134}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -1027,6 +1131,19 @@ Transform:
   - {fileID: 52132618}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &544196134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544196132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91ce984a2364bf49202dfa0e7dbcc24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreUI
+  scoreText: {fileID: 884812334}
 --- !u!1 &551628208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2872,16 +2989,68 @@ PrefabInstance:
       propertyPath: m_Name
       value: Balloon_Red
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: beb9832c7aa32ed468eab1420a31ed8e, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: beb9832c7aa32ed468eab1420a31ed8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1302757852}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: beb9832c7aa32ed468eab1420a31ed8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1302757853}
   m_SourcePrefab: {fileID: 100100000, guid: beb9832c7aa32ed468eab1420a31ed8e, type: 3}
 --- !u!4 &1302757850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: beb9832c7aa32ed468eab1420a31ed8e, type: 3}
   m_PrefabInstance: {fileID: 1302757849}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1302757851 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: beb9832c7aa32ed468eab1420a31ed8e, type: 3}
+  m_PrefabInstance: {fileID: 1302757849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &1302757852
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302757851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.175
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1302757853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302757851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af0b04c32a20d87469a5eed471c65e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterBalloon
+  PopsVFXPrefab:
+  - {fileID: 3034999282820948246, guid: 352a7e3b9d637c745b949dec4e33e3db, type: 3}
+  - {fileID: 4842484271173824181, guid: 423f90c37173e414996db81280dc6a5e, type: 3}
+  BalloonScore: 1
 --- !u!1 &1430646111
 GameObject:
   m_ObjectHideFlags: 0
@@ -3117,16 +3286,68 @@ PrefabInstance:
       propertyPath: m_Name
       value: Balloon_Gold
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1512613166}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1512613167}
   m_SourcePrefab: {fileID: 100100000, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
 --- !u!4 &1512613164 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
   m_PrefabInstance: {fileID: 1512613163}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1512613165 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0e4a27f4db5853f41b7efcee8b58b2b3, type: 3}
+  m_PrefabInstance: {fileID: 1512613163}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &1512613166
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512613165}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.058
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1512613167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512613165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af0b04c32a20d87469a5eed471c65e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterBalloon
+  PopsVFXPrefab:
+  - {fileID: 1023409776734649043, guid: 02761778219481341897b059c8844100, type: 3}
+  - {fileID: 7602070536719820232, guid: 3ace95d3dc7f99d4ba4f03ac2cc7a6a4, type: 3}
+  BalloonScore: 1
 --- !u!1 &1627441627
 GameObject:
   m_ObjectHideFlags: 0
@@ -4243,16 +4464,67 @@ PrefabInstance:
       propertyPath: m_Name
       value: Balloon_Green
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8b760540f76e662439ae35723a1ec46d, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8b760540f76e662439ae35723a1ec46d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099597788}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8b760540f76e662439ae35723a1ec46d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099597789}
   m_SourcePrefab: {fileID: 100100000, guid: 8b760540f76e662439ae35723a1ec46d, type: 3}
 --- !u!4 &2099597786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8b760540f76e662439ae35723a1ec46d, type: 3}
   m_PrefabInstance: {fileID: 2099597785}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2099597787 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8b760540f76e662439ae35723a1ec46d, type: 3}
+  m_PrefabInstance: {fileID: 2099597785}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &2099597788
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099597787}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.11
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2099597789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099597787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af0b04c32a20d87469a5eed471c65e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterBalloon
+  PopsVFXPrefab:
+  - {fileID: 8268607491707787145, guid: dedc76c1f09f3954c95617f098c27ca8, type: 3}
+  BalloonScore: 1
 --- !u!1001 &769130956134373978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4319,3 +4591,4 @@ SceneRoots:
   - {fileID: 357769063}
   - {fileID: 1862678733}
   - {fileID: 544196133}
+  - {fileID: 234199180}

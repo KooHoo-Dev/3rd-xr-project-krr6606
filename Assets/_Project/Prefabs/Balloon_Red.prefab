@@ -105,7 +105,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af0b04c32a20d87469a5eed471c65e78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterBalloon
+  balloonType: 0
   PopsVFXPrefab:
   - {fileID: 3034999282820948246, guid: 352a7e3b9d637c745b949dec4e33e3db, type: 3}
   - {fileID: 4842484271173824181, guid: 423f90c37173e414996db81280dc6a5e, type: 3}
-  BalloonScore: 1
+  BalloonScore: 10
+  riseHeight: 1.5
+  riseDuration: 1
+  hoverTime: 5
+  bobAmount: 0.1
+  bobDuration: 1
+  fallBelow: 0.5
+  fallDuration: 2

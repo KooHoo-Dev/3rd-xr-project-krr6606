@@ -112,4 +112,11 @@ MonoBehaviour:
   balloonType: 1
   PopsVFXPrefab:
   - {fileID: 1319329296141618287, guid: 7d98bad9a80291d44a6dfe27514dd6c2, type: 3}
-  BalloonScore: 1
+  BalloonScore: 20
+  riseHeight: 1.5
+  riseDuration: 1
+  hoverTime: 5
+  bobAmount: 0.1
+  bobDuration: 1
+  fallBelow: 0.5
+  fallDuration: 2

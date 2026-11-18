@@ -12,7 +12,7 @@ using UnityEngine;
         {
             gameManager = GameManager._instance;
             if(gameManager == null) return;
-            if (gameManager.OnScoreChanged == null)
+            
                 gameManager.OnScoreChanged += ScoreUpdate;
         }
 
@@ -29,6 +29,6 @@ using UnityEngine;
         private void ScoreUpdate(int newScore)
         {
             currentScore = newScore;
-            scoreText.text = $"{currentScore.ToString()} / 300" ;
+            scoreText.text = $"{currentScore.ToString()} / {gameManager.goalScore}" ;
         }
     }

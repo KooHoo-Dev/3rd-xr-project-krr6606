@@ -33,6 +33,9 @@ public class BalloonSpawner : MonoBehaviour
     }
     void Update()
     {
+        // 시작 버튼을 누르기 전, 게임이 끝난 뒤에는 스폰하지 않는다
+        if (GameManager._instance.IsGameRunning == false) return;
+
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= spawnInterval)
         {
@@ -75,12 +78,22 @@ public class BalloonSpawner : MonoBehaviour
         WaterBalloon spawnedBalloon = Instantiate(balloonPrefab, spawnPoint.position, Quaternion.identity);
         spawnedBalloon.OnBalloonPops += (balloonTypeIndex) => ReSetSpawnSates(spawnPointIndex);
         spawnedBalloon.OnBalloonExpired += () => ReSetSpawnSates(spawnPointIndex);
+        GameManager._instance.RegisterBalloon(spawnedBalloon);
     }
     void GoldBalloonSpawn()
     {
+        // Invoke로 예약된 사이에 게임이 끝났을 수 있다. 그때는 만들지 않고 다음 판을 위해 상태만 되돌린다
+        if (GameManager._instance.IsGameRunning == false)
+        {
+            isGoldBalloonSpawned = false;
+            return;
+        }
         WaterBalloon goldBalloonPrefab = balloonPrefabs[BalloonType.Gold];
         WaterBalloon spawnedBalloon = Instantiate(goldBalloonPrefab, GoldBalloonSpawnPoint.position, Quaternion.identity);
         spawnedBalloon.OnBalloonPops += (balloonTypeIndex) => isGoldBalloonSpawned = false;
+        spawnedBalloon.OnBalloonExpired += () => isGoldBalloonSpawned = false;
+        GameManager._instance.RegisterBalloon(spawnedBalloon);
+
     }
     void UpdateGoldBalloonSpawn()
     {

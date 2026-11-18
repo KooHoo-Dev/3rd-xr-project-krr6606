@@ -71,14 +71,23 @@ public class WaterBalloon : MonoBehaviour
     // 끝까지 안 맞고 스폰 높이 아래로 내려간 경우: 점수 없이 삭제
     void Expire()
     {
-        if(balloonType == BalloonType.Gold) return;
         OnBalloonExpired?.Invoke();
+        Destroy(gameObject);
+    }
+    // 게임이 끝나서 모든 풍선을 삭제할 때: 점수 없이 삭제
+    public void GameOver()
+    {
+        OnBalloonExpired?.Invoke();
+        for (int i = 0; i < PopsVFXPrefab.Length; i++)
+        {
+            Instantiate(PopsVFXPrefab[i], transform.position, Quaternion.identity);
+        }
         Destroy(gameObject);
     }
 
     void Pops()
     {
-        gameManager.IncreaseScore(BalloonScore);
+        gameManager.IncreaseScore(BalloonScore, balloonType);
         OnBalloonPops?.Invoke(BalloonScore);
 
         for (int i = 0; i < PopsVFXPrefab.Length; i++)

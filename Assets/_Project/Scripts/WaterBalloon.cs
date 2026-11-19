@@ -52,7 +52,7 @@ public class WaterBalloon : MonoBehaviour
         float spawnY = transform.position.y;
         float hoverY = spawnY + riseHeight;
 
-        // Yoyo는 한 번 = 한 방향. 짝수여야 hoverY로 돌아온 뒤 하강이 시작돼 튀지 않는다
+        // Yoyo는 한 번 = 한 방향. 짝수여야 hoverY로 돌아온 뒤 하강이 시작돼 반복시에 범위를 벗어나지 않는다.
         int bobLoops = Mathf.RoundToInt(hoverTime / bobDuration);
         if (bobLoops % 2 == 1) bobLoops++;
         if (bobLoops < 2) bobLoops = 2;

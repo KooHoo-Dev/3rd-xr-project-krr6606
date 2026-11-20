@@ -8,10 +8,10 @@ public class Dart : MonoBehaviour
 {
     XRGrabInteractable interactable;
 
-
+    [SerializeField] private float CorrectionSpeed = 1f;
     private Vector3 originPos;
     private quaternion originRot;
-    private Rigidbody rb;
+    public Rigidbody rb { get; private set; }
 
     private object dartlock = new object();
 
@@ -49,8 +49,9 @@ public class Dart : MonoBehaviour
     public void Throw(BaseInteractionEventArgs eventArgs)
     {
         rb.isKinematic = false;
-   
-        rb.AddForce(eventArgs.interactableObject.transform.forward * 5f, ForceMode.Impulse);
+        if(rb.linearVelocity.magnitude < 0.001) return;
+        float speed =  rb.linearVelocity.magnitude < 0.001 ? rb.linearVelocity.magnitude : 0.01f ;
+        rb.AddForce(eventArgs.interactableObject.transform.forward * ( Mathf.Clamp(CorrectionSpeed - (CorrectionSpeed / rb.linearVelocity.magnitude * CorrectionSpeed),1,CorrectionSpeed)), ForceMode.Impulse);
         
         IsThrown = true;
     }

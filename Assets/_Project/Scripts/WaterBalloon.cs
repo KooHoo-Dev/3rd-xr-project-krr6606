@@ -108,7 +108,7 @@ public class WaterBalloon : MonoBehaviour
         {
             Debug.Log("[WaterBalloon] " +other.gameObject.name + "이 충돌했습니다!");
             Dart dart = other.gameObject.GetComponent<Dart>();
-            if(dart?.IsThrown == false) return;
+            if(dart?.IsThrown == false || dart?.rb.isKinematic == true) return;
             
             Pops();
         }

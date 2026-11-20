@@ -77,19 +77,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 95bafa1ba27736e409b09415a9a6a9f4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7068645
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 95bafa1ba27736e409b09415a9a6a9f4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.70686454
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 95bafa1ba27736e409b09415a9a6a9f4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.018509906
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 95bafa1ba27736e409b09415a9a6a9f4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.018509872
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 95bafa1ba27736e409b09415a9a6a9f4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -179,7 +179,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8760844784875528646}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 0.31
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c7b605acdd82640a8a27031a0a3d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dart
+  CorrectionSpeed: 30
 --- !u!114 &6879595790556237924
 MonoBehaviour:
   m_ObjectHideFlags: 0

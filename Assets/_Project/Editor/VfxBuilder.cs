@@ -1,5 +1,5 @@
 // VFX 프리팹 자동 생성 도구 (에디터 전용) — AI-Assist: generated
-// 메뉴: Tools > Dart Challenge > Build VFX Prefabs
+// 메뉴: Tools > Stone Challenge > Build VFX Prefabs
 //
 // 하는 일
 //   1) T_FX_* 텍스처 임포트 설정, 파티클 머티리얼 4개 생성 (Art/Materials/M_FX_*)
@@ -30,7 +30,7 @@ public static class VfxBuilder
 
     static Material matWater, matShred, matRing, matSparkle;
 
-    [MenuItem("Tools/Dart Challenge/Build VFX Prefabs")]
+    [MenuItem("Tools/Stone Challenge/Build VFX Prefabs")]
     public static void Build()
     {
         AssetDatabase.Refresh();

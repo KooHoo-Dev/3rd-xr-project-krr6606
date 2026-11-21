@@ -181,7 +181,7 @@ SOUNDS = (
     ("SFX_Fanfare", fanfare, 0.80),
     ("SFX_BalloonRise", balloon_rise, 0.60),
     ("SFX_UIClick", ui_click, 0.60),
-    ("SFX_DartMiss", miss, 0.70),
+    ("SFX_StoneMiss", miss, 0.70),
 )
 
 if __name__ == "__main__":

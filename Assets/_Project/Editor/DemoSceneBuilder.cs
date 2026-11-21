@@ -1,14 +1,14 @@
 // 데모 씬 자동 조립 도구 (에디터 전용) — AI-Assist: generated
-// 메뉴: Tools > Dart Challenge > Build Demo Scene
+// 메뉴: Tools > Stone Challenge > Build Demo Scene
 //
 // 하는 일
 //   1) 생성된 텍스처/FBX의 임포트 설정 (docs/assets/import-guide.md 1~3번을 자동으로)
 //   2) M_Palette 머티리얼 생성 후 FBX에 연결
 //   3) 새 씬에 게임 준비 배치 + XR Origin + UI(모양만) 배치, 조명/반사 설정
 // 하지 않는 일 (직접 구현할 부분)
-//   - 다트 잡기/던지기(XR Grab Interactable, Rigidbody), 풍선 판정, 버튼 동작(onClick)
+//   - 새총 세트(SlingshotSceneBuilder), 풍선 판정, 버튼 동작(onClick)
 //
-// 환경 = 야외 여름 계곡(Valley.fbx), 다트통 받침 = 통나무(LogStand.fbx), 물풍선 4종은 예시 배치만 (docs/decisions/003).
+// 환경 = 야외 여름 계곡(Valley.fbx), 새총 받침 = 통나무(LogStand.fbx), 물풍선 4종은 예시 배치만 (docs/decisions/003, 008).
 // 실내 방 · 다트판 · 바 테이블은 기획 전환으로 삭제했다.
 //
 // 배치 수치는 Tools/AssetGen/layout.py 와 같게 유지한다.
@@ -28,7 +28,7 @@ public static class DemoSceneBuilder
 {
     const string Art = "Assets/_Project/Art";
     const string SceneDir = "Assets/_Project/Scenes";
-    const string ScenePath = SceneDir + "/DartDemo.unity";
+    const string ScenePath = SceneDir + "/StoneDemo.unity";
     const string RigPath = "Assets/Samples/XR Interaction Toolkit/3.5.1/Starter Assets/Prefabs/XR Origin (XR Rig).prefab";
     const string FontPath = "Assets/99. External Assets/Font/Noto_Sans_KR/NotoSansKR-Regular SDF.asset";
 
@@ -47,9 +47,8 @@ public static class DemoSceneBuilder
     static readonly Item[] Layout =
     {
         new Item("Valley",         Vector3.zero,                      0, "Environment", true),
-        new Item("OcheLine",       Vector3.zero,                      0, "Game", true),
+        new Item("ShootingLine",   Vector3.zero,                      0, "Game", true),
         new Item("LogStand",       new Vector3(0.55f, 0f, -0.1f),     0, "Game", true),
-        new Item("DartHolder",     new Vector3(0.55f, 1f, -0.1f),    20, "Game", true),
     };
 
     // 물풍선 예시 배치 (일렬 대형 하나 + 금빛 하나). 게임에서는 코드가 띄우므로 정적이 아니다
@@ -61,7 +60,7 @@ public static class DemoSceneBuilder
         new Item("Balloon_Gold",   new Vector3(0.60f, 1.85f, 1.75f),  0, "Game", false),
     };
 
-    [MenuItem("Tools/Dart Challenge/Build Demo Scene")]
+    [MenuItem("Tools/Stone Challenge/Build Demo Scene")]
     public static void Build()
     {
         if (File.Exists(ScenePath) &&
@@ -79,15 +78,13 @@ public static class DemoSceneBuilder
         foreach (var g in new[] { "Environment", "Game", "Lighting", "XR", "UI" })
             groups[g] = new GameObject(g).transform;
 
-        GameObject holder = null, valley = null;
+        GameObject valley = null;
         foreach (var it in Layout)
         {
             var go = Spawn(it.model, it.pos, it.rotY, groups[it.group]);
             if (it.isStatic) SetStatic(go);
-            if (it.model == "DartHolder") holder = go;
             if (it.model == "Valley") valley = go;
         }
-        PlaceDarts(holder, groups["Game"]);
         PlaceBalloons(groups["Game"]);
         AddGroundCollider(valley);
         SetupLighting(groups["Lighting"]);
@@ -103,7 +100,7 @@ public static class DemoSceneBuilder
         Debug.Log("[DemoSceneBuilder] 완료: " + ScenePath + "  (빌드에 넣으려면 File > Build Profiles 에서 씬 추가)");
     }
 
-    [MenuItem("Tools/Dart Challenge/Bake Lighting (optional)")]
+    [MenuItem("Tools/Stone Challenge/Bake Lighting (optional)")]
     public static void Bake()
     {
         Lightmapping.BakeAsync();
@@ -181,21 +178,6 @@ public static class DemoSceneBuilder
         return go;
     }
 
-    static void PlaceDarts(GameObject holder, Transform game)
-    {
-        var parent = new GameObject("Darts").transform;
-        parent.SetParent(game, false);
-        for (int i = 1; i <= 7; i++)
-        {
-            var slot = FindDeep(holder.transform, $"Slot_{i:00}");
-            if (slot == null) { Debug.LogWarning($"Slot_{i:00} 없음"); continue; }
-            // 다트 피벗 = 촉 끝, Slot = 촉 끝 위치이고 +Z가 아래를 향한다
-            var dart = Spawn("Dart", slot.position, 0f, parent);
-            dart.transform.rotation = slot.rotation * Quaternion.Euler(0f, 0f, i * 23f);
-            dart.name = $"Dart_{i:00}";
-        }
-    }
-
     static void PlaceBalloons(Transform game)
     {
         var parent = new GameObject("Balloons_Example").transform;
@@ -246,13 +228,13 @@ public static class DemoSceneBuilder
         probe.boxProjection = false;
         probe.resolution = 128;
 
-        var ls = new LightingSettings { name = "DartDemo_Lighting" };
+        var ls = new LightingSettings { name = "StoneDemo_Lighting" };
         ls.bakedGI = true;
         ls.realtimeGI = false;
         ls.mixedBakeMode = MixedLightingMode.IndirectOnly;
         ls.lightmapResolution = 6;                   // 계곡 지형이 넓어서 실내 때(12)보다 낮춤
         ls.lightmapMaxSize = 1024;
-        var lsPath = SceneDir + "/DartDemo_Lighting.lighting";
+        var lsPath = SceneDir + "/StoneDemo_Lighting.lighting";
         Directory.CreateDirectory(SceneDir);
         AssetDatabase.DeleteAsset(lsPath);
         AssetDatabase.CreateAsset(ls, lsPath);
@@ -278,7 +260,7 @@ public static class DemoSceneBuilder
     static void BakeReflectionProbe()
     {
         var probe = Object.FindFirstObjectByType<ReflectionProbe>();
-        var path = SceneDir + "/DartDemo_ReflectionProbe.exr";
+        var path = SceneDir + "/StoneDemo_ReflectionProbe.exr";
         if (probe != null && Lightmapping.BakeReflectionProbe(probe, path))
         {
             AssetDatabase.ImportAsset(path);
@@ -452,8 +434,8 @@ public static class DemoSceneBuilder
 
     static void LogSizeCheck()
     {
-        // 임포트 스케일 확인: 다트 길이 ≈ 0.16, 빨강 풍선 가로 ≈ 0.35, 금빛 풍선 가로 ≈ 0.12 이어야 정상
-        foreach (var n in new[] { "Dart_01", "Balloon_Red", "Balloon_Gold" })
+        // 임포트 스케일 확인: 빨강 풍선 가로 ≈ 0.35, 금빛 풍선 가로 ≈ 0.12 이어야 정상
+        foreach (var n in new[] { "Balloon_Red", "Balloon_Gold" })
         {
             var go = GameObject.Find(n);
             if (go == null) continue;

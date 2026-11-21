@@ -17,10 +17,9 @@ import make_balloons as BL  # noqa: E402
 import make_base as B  # noqa: E402
 import make_props as P  # noqa: E402
 import make_valley as V  # noqa: E402
-from dart_geo import build_dart  # noqa: E402
 
 BUILD = dict(B.BUILDERS)
-BUILD.update({"LogStand": P.make_log_stand, "DartHolder": P.make_holder,
+BUILD.update({"LogStand": P.make_log_stand,
               "Valley": lambda: V.build_valley()[0]})
 SIZES = {n: (d, sw) for n, d, sw in BL.BALLOONS}
 
@@ -31,20 +30,13 @@ def place(obj, pos, rot_y):
 
 
 C.reset()
-holder = None
 for name, pos, rot in LY.LAYOUT:
     o = BUILD[name]()
     place(o, pos, rot)
-    if name == "DartHolder":
-        holder = o
 for name, pos in LY.BALLOONS:
     d, sw = SIZES[name]
     place(BL.build_balloon(name, d, sw), pos, 0)
 bpy.context.view_layer.update()
-for i, e in enumerate(sorted(holder.children, key=lambda o: o.name)):     # 다트 7개를 슬롯에 꽂기
-    d = build_dart("D" + e.name)
-    d.location = e.matrix_world.translation
-    d.rotation_euler = (math.radians(90), 0, math.radians(23 * i))
 
 # --- 조명: 해 + 하늘 ---
 sc = bpy.context.scene

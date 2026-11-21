@@ -15,7 +15,7 @@ public class WaterBalloon : MonoBehaviour
     GameManager gameManager;
     Renderer rend;
     private Collider col;
-    LayerMask DartLayer;
+    LayerMask StoneLayer;
     public BalloonType balloonType;
     public GameObject[] PopsVFXPrefab;
     public int BalloonScore = 1;
@@ -40,7 +40,7 @@ public class WaterBalloon : MonoBehaviour
 
     private void Start()
     {
-        DartLayer = LayerMask.NameToLayer("Dart");
+        StoneLayer = LayerMask.NameToLayer("Stone");
         gameManager = GameManager._instance;
     }
     private void OnEnable()
@@ -104,11 +104,11 @@ public class WaterBalloon : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == DartLayer)
+        if (other.gameObject.layer == StoneLayer)
         {
             Debug.Log("[WaterBalloon] " +other.gameObject.name + "이 충돌했습니다!");
-            Dart dart = other.gameObject.GetComponent<Dart>();
-            if(dart?.IsThrown == false || dart?.rb.isKinematic == true) return;
+            Stone stone = other.gameObject.GetComponent<Stone>();
+            if (stone != null && (stone.IsThrown == false || stone.rb.isKinematic)) return;
             
             Pops();
         }

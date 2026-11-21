@@ -1,8 +1,8 @@
-"""기본 에셋: 공용 팔레트 텍스처 + 던지는 선 + UI 스프라이트
+"""기본 에셋: 공용 팔레트 텍스처 + 쏘는 선 + UI 스프라이트
 
 만드는 것 (모두 Assets/_Project/Art/ 아래)
   Textures/T_Palette_*.png   공용 팔레트 (색 · 금속도 · 발광)
-  Models/OcheLine.fbx        던지는 선 (황동 띠)
+  Models/ShootingLine.fbx    쏘는 선 (황동 띠, 플레이어가 서는 곳)
   UI/UI_RoundedRect.png, UI/UI_Circle.png
 
 실내 다트 바 방 · 네온 · 칠판 등은 기획 전환으로 삭제했다 (docs/decisions/003).
@@ -18,10 +18,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import common as C  # noqa: E402
 
 
-def build_oche():
+def build_shooting_line():
     mb = C.MeshBuilder()
     C.ubox(mb, (-0.35, 0.0, -0.025), (0.35, 0.008, 0.025), "brass")
-    o = mb.build("OcheLine", sharp_deg=40)
+    o = mb.build("ShootingLine", sharp_deg=40)
     C.bevel_all(o, 0.002, 2)
     return o
 
@@ -58,7 +58,7 @@ def make_sprites():
 
 
 BUILDERS = {
-    "OcheLine": build_oche,
+    "ShootingLine": build_shooting_line,
 }
 
 if __name__ == "__main__":

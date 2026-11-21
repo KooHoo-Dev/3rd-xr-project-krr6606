@@ -92,6 +92,18 @@ PALETTE = {
     "trunk":        ("#5A4232", 0.0, 0.20),
     "mountain_a":   ("#6F9A8A", 0.0, 0.10),
     "mountain_b":   ("#86AEA0", 0.0, 0.10),
+    # --- 5단계: 새총 (docs/decisions/008) ---
+    "leather_dark": ("#4A1216", 0.0, 0.35),
+    "band_latex":   ("#D99A3C", 0.0, 0.55),
+    "wood_grain":   ("#8C5A30", 0.0, 0.38),
+    "wood_knot":    ("#5E3A1E", 0.0, 0.30),
+    # --- 5단계: 새총 돌멩이 탄환 ---
+    "stone_white":  ("#D6D0C3", 0.0, 0.30),
+    "stone_dark":   ("#4C4946", 0.0, 0.32),
+    "stone_red":    ("#8E5B47", 0.0, 0.30),
+    "stone_green":  ("#5E6D58", 0.0, 0.30),
+    "stone_vein":   ("#EFECE4", 0.0, 0.40),
+    "stone_speck":  ("#2C2A28", 0.0, 0.25),
 }
 GRID = 16
 PAL_SIZE = 256

@@ -23,6 +23,8 @@ public class WaterBalloon : MonoBehaviour
     public Action<int> OnBalloonPops;
     // 점수 없이 사라질 때(체공 시간 만료) 알림. 스폰 포인트를 비우는 용도
     public Action OnBalloonExpired;
+    // 어떤 풍선이든 터지면 알림 (금빛 풍선 팡파르처럼 풍선 프리팹 밖에서 피드백을 줄 때). static이라 풍선마다 연결할 필요가 없다
+    public static Action<BalloonType> OnAnyBalloonPopped;
 
     [Header("체공 연출")]
     [SerializeField] private float riseHeight = 1.5f;   // 스폰 위치에서 얼마나 떠오를지
@@ -89,6 +91,7 @@ public class WaterBalloon : MonoBehaviour
     {
         gameManager.IncreaseScore(BalloonScore, balloonType);
         OnBalloonPops?.Invoke(BalloonScore);
+        OnAnyBalloonPopped?.Invoke(balloonType);
 
         for (int i = 0; i < PopsVFXPrefab.Length; i++)
         {

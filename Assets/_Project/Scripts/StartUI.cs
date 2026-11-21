@@ -15,7 +15,7 @@ using UnityEngine.UI;
             gameManager = GameManager._instance;
             if(gameManager == null) return;
             gameManager.OnGameStarted += HideStartPanel;
-            gameManager.OnGameOver += ShowStartPanel;
+            // 게임이 끝나면 결과 패널(ResultUI)이 같은 자리에 뜨고 다시하기도 거기서 한다. 시작 패널은 처음 한 번만 보인다
             startButton.onClick.AddListener(OnClickStart);
             ShowStartPanel();
         }
@@ -24,7 +24,6 @@ using UnityEngine.UI;
         {
             if(gameManager == null) return;
             gameManager.OnGameStarted -= HideStartPanel;
-            gameManager.OnGameOver -= ShowStartPanel;
         }
         private void OnClickStart()
         {

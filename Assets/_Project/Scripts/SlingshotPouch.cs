@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Filtering;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 // 새총 주머니 (결정 008). 새총의 자식이라 새총과 같은 프레임에 같이 움직인다.
 // - 쉴 때: 실제 새총처럼 갈래 가운데에서 아래로 축 늘어진다. 중력 방향(월드 아래)으로 매달리고, 새총을 흔들면 살짝 늦게 따라온다.
@@ -8,6 +10,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 //   손이 옆으로 가거나 돌아도 주머니는 새총 가운데 면을 벗어나지 않아서, 당기는 손의 좌우 떨림이 조준에 섞이지 않는다.
 // - 발사 방향 = 주머니 → 갈래 가운데, 세기 = 앞뒤로 당긴 거리 × launchPower. 손을 휘두르는 속도는 쓰지 않는다.
 // - XRI는 잡았다/놓았다만 판정한다 (Track Position · Rotation 끔, 잡을 때 부모에서 떼지 않음).
+// - 새총을 손에 쥐고 있을 때만 주머니를 잡을 수 있다. 받침대에 있는 새총의 주머니를 당기는 일은 없게 한다
+// - 새총을 한 손으로 쥐고 있으면 다른 손은 새총을 빼앗아 잡을 수 없고, 주머니 당기기만 된다
 [RequireComponent(typeof(XRGrabInteractable), typeof(AudioSource))]
 public class SlingshotPouch : MonoBehaviour
 {
@@ -53,7 +57,32 @@ public class SlingshotPouch : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         grab.selectEntered.AddListener(OnGrab);
         grab.selectExited.AddListener(OnRelease);
+        // 주머니 잡기(XRGrabInteractable)를 꺼 두고, 새총을 쥐면 켜고 놓으면 끈다
+        XRGrabInteractable slingshotGrab = slingshot.GetComponent<XRGrabInteractable>();
+        slingshotGrab.selectEntered.AddListener(OnSlingshotGrab);
+        slingshotGrab.selectExited.AddListener(OnSlingshotRelease);
+        // XRI 기본값(Select Mode: Single)은 다른 손이 잡으면 새총을 그 손으로 넘겨준다. 선택 필터로 막는다
+        slingshotGrab.selectFilters.Add(new XRSelectFilterDelegate(OnlyCurrentHolder));
+        grab.enabled = false;
         LoadStone();
+    }
+
+    // 아무도 안 쥐었으면 누구나 잡을 수 있고, 쥐고 있으면 지금 쥔 손만 계속 잡을 수 있다.
+    // XRI는 이미 잡고 있는 손도 매 프레임 이 검사를 다시 하므로, 쥔 손은 통과시켜야 놓치지 않는다
+    bool OnlyCurrentHolder(IXRSelectInteractor interactor, IXRSelectInteractable interactable)
+    {
+        return !interactable.isSelected || interactable.interactorsSelecting.Contains(interactor);
+    }
+
+    void OnSlingshotGrab(SelectEnterEventArgs args)
+    {
+        grab.enabled = true;
+    }
+
+    // 주머니를 당긴 채 새총을 놓으면, 꺼지는 순간 XRI가 주머니 잡기도 취소한다 → OnRelease가 불려 당긴 만큼 발사된다
+    void OnSlingshotRelease(SelectExitEventArgs args)
+    {
+        grab.enabled = false;
     }
 
     void OnGrab(SelectEnterEventArgs args)

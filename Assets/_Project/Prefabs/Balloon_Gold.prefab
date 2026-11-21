@@ -94,7 +94,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.058
+  m_Radius: 0.06
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6469404104557418896
 MonoBehaviour:
@@ -112,7 +112,7 @@ MonoBehaviour:
   PopsVFXPrefab:
   - {fileID: 1023409776734649043, guid: 02761778219481341897b059c8844100, type: 3}
   - {fileID: 7602070536719820232, guid: 3ace95d3dc7f99d4ba4f03ac2cc7a6a4, type: 3}
-  BalloonScore: 777
+  BalloonScore: 7777
   riseHeight: 1.5
   riseDuration: 1
   hoverTime: 5

@@ -307,7 +307,7 @@ public static class DemoSceneBuilder
         // 시작 패널: 플레이어 앞 1.15 m, 눈보다 조금 아래, 위쪽으로 살짝 기울임
         var start = MakeCanvas(root, "UI_StartPanel", new Vector3(0f, 1.35f, 0.9f), 12f, new Vector2(640, 400), cam);
         Panel(start.transform, rounded);
-        Label(start, font, "다트 챌린지", 72, new Vector2(0, 110), Color.white);
+        Label(start, font, "물풍선 터트리기", 72, new Vector2(0, 110), Color.white);
         Label(start, font, "60초 안에 물풍선을 터트려 300점을 넘겨라!\n금빛 풍선 = 777점", 34, new Vector2(0, 10), new Color(0.85f, 0.85f, 0.85f));
         MakeButton(start.transform, font, rounded, "StartButton", "시작", new Vector2(0, -120));
 

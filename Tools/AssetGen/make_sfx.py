@@ -205,6 +205,30 @@ def sling_return(rng):
     return s
 
 
+
+def win(rng):
+    """승리: 솔-도-미-솔 빠르게 올라간 뒤 높은 도 화음을 길게 + 반짝임 (게임 끝, 목표 점수 달성)."""
+    brass = ((1, 1.0), (2, 0.5), (3, 0.33), (4, 0.18), (5, 0.1))
+    s = silence(2.4)
+    for i, f in enumerate((392.0, 523.25, 659.25, 783.99)):
+        mix(s, tone(0.13, f, decay=6, attack=0.006, harmonics=brass), i * 0.11, 0.55)
+    for f, g in ((1046.5, 0.6), (783.99, 0.45), (659.25, 0.4), (523.25, 0.35), (261.63, 0.3)):
+        mix(s, tone(1.8, f, decay=1.6, attack=0.01, harmonics=brass, vibrato=5.5), 0.46, g)
+    for i, f in enumerate((2093, 2637, 3136, 4186, 3136, 4186)):    # 위에서 흩날리는 반짝임
+        mix(s, tone(0.2, f, decay=18), 0.5 + i * 0.12, 0.18)
+    return s
+
+
+def lose(rng):
+    """패배: '뿌-뿌-뿌-뿌우~' 반음씩 내려가는 낮은 금관 + 마지막 음은 처지며 떨림."""
+    horn = ((1, 1.0), (2, 0.6), (3, 0.35), (4, 0.15))
+    s = silence(2.0)
+    for i, f in enumerate((311.13, 293.66, 277.18)):              # 미♭ - 레 - 레♭
+        mix(s, tone(0.32, f, decay=3, attack=0.02, harmonics=horn), i * 0.36, 0.6)
+    mix(s, tone(0.95, 261.63, 233.08, decay=1.5, attack=0.02, harmonics=horn, vibrato=6.5), 1.08, 0.65)  # 도 → 처짐
+    return s
+
+
 SOUNDS = (
     ("SFX_Pop", pop, 0.89),
     ("SFX_GoldPop", gold_pop, 0.89),
@@ -216,6 +240,8 @@ SOUNDS = (
     ("SFX_SlingStretch", sling_stretch, 0.55),
     ("SFX_SlingRelease", sling_release, 0.80),
     ("SFX_SlingReturn", sling_return, 0.60),
+    ("SFX_Win", win, 0.80),
+    ("SFX_Lose", lose, 0.75),
 )
 
 if __name__ == "__main__":

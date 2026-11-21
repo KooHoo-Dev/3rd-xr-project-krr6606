@@ -15,6 +15,7 @@
 //      손마다 따로 각도를 맞추는 Hold Offset 을 둔다 (왼손 · 오른손 축이 거울처럼 달라서 새총 쪽 하나로는 둘 다 못 맞춘다)
 //   6) 소리: 주머니 잡기 '끼익' · 발사 '팅-슉' · 돌 착지 '툭' · 받침대 복귀 '톡' (Tools/AssetGen/make_sfx.py 로 만든 wav)
 //      새총은 놓으면 받침대 위 처음 자리로 돌아간다 (SlingshotReturn)
+//   7) 결과 UI · 금빛 풍선 팡파르 연결 (GameFeedbackBuilder, 열린 씬에만 따로 적용하는 메뉴도 있음)
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -81,6 +82,9 @@ public static class SlingshotSceneBuilder
 
         // 5) 손 잡기 기준을 Grip Pose + 손별 Hold Offset 으로
         int hands = SetupGripPose();
+
+        // 7) 결과 UI · 금빛 풍선 팡파르
+        GameFeedbackBuilder.Setup(scene);
 
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);

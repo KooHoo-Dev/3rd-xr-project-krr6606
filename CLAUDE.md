@@ -10,7 +10,7 @@
 
 ## 1. 프로젝트 컨텍스트
 
-- **무엇을:** XR 물풍선 다트 (가칭: 다트 챌린지). 60초 동안 공중의 물풍선을 다트로 터트려 목표 점수 넘기기, 금빛 풍선 777점. 환경은 야외 여름 계곡. 상세는 [docs/planning/concept.md](docs/planning/concept.md)
+- **무엇을:** XR 물풍선 터트리기. 손에 든 새총으로 돌멩이를 쏘아 60초 동안 공중의 물풍선을 터트려 목표 점수 넘기기, 금빛 풍선 777점. 환경은 야외 여름 계곡. 상세는 [docs/planning/concept.md](docs/planning/concept.md)
 - **환경:** Unity 6000.3, URP, XR Interaction Toolkit **3.5.x**, OpenXR + Meta OpenXR, Meta Quest (Android APK)
 - **일정:** 1차 빌드 · 시연 영상 제출 **2026-11-23**
 - **범위:** 필수 = 잡기 · 던지기 · 레이 UI(시작/다시하기). 선택 = 소켓. 범위를 늘리자는 제안은 일정과 함께 말할 것.

@@ -13,6 +13,8 @@
 //      - 새총을 쥔 동안 XRI 위치 · 회전 스무딩을 켠다 (손 추적 떨림 완화)
 //   5) 손으로 잡는 기준을 '집는 점(Pinch Grab Pose)'에서 '손바닥 쥐기 자세(Grip Pose)'로 바꾸고,
 //      손마다 따로 각도를 맞추는 Hold Offset 을 둔다 (왼손 · 오른손 축이 거울처럼 달라서 새총 쪽 하나로는 둘 다 못 맞춘다)
+//   6) 소리: 주머니 잡기 '끼익' · 발사 '팅-슉' · 돌 착지 '툭' · 받침대 복귀 '톡' (Tools/AssetGen/make_sfx.py 로 만든 wav)
+//      새총은 놓으면 받침대 위 처음 자리로 돌아간다 (SlingshotReturn)
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,11 +32,15 @@ public static class SlingshotSceneBuilder
     const string TargetScene = "Assets/_Project/Scenes/StoneDemo_Slingshot.unity";
     const string Models = "Assets/_Project/Art/Models";
     const string StonePrefabDir = "Assets/_Project/Prefabs/Stones";
+    const string AudioDir = "Assets/_Project/Audio";
     const string InputActions = "Assets/Samples/XR Interaction Toolkit/3.5.1/Starter Assets/XRI Default Input Actions.inputactions";
 
-    // 손마다 새총을 쥐는 각도. Play 중 각 손의 Grip Pose > Hold Offset 의 Rotation 을 바꿔 보며 찾은 값을 여기에 적는다
-    static readonly Vector3 HoldOffsetLeft = Vector3.zero;
-    static readonly Vector3 HoldOffsetRight = Vector3.zero;
+    // 손마다 새총을 쥐는 위치 · 각도. 사용자가 Quest에서 Grip Pose > Hold Offset 을 직접 맞춘 값 (2026-11-21)
+    // 왼손 · 오른손이 거울처럼 부호만 반대다
+    static readonly Vector3 HoldPositionLeft = new Vector3(0f, -0.02f, 0.02f);
+    static readonly Vector3 HoldOffsetLeft = new Vector3(0f, 18.5f, -90f);
+    static readonly Vector3 HoldPositionRight = new Vector3(0f, 0.02f, -0.02f);
+    static readonly Vector3 HoldOffsetRight = new Vector3(0f, -18.5f, 90f);
     const float GrabSmoothing = 12f;   // XRI 스무딩 양. 클수록 손을 빨리 따라가고(덜 부드러움), 작을수록 부드럽지만 늦다
 
     [MenuItem("Tools/Stone Challenge/Build Slingshot Test Scene")]
@@ -119,7 +125,10 @@ public static class SlingshotSceneBuilder
             rb.mass = 0.05f;
             rb.interpolation = RigidbodyInterpolation.None;   // 장전 중엔 꺼야 주머니를 따라간다. 날아갈 때 Stone.Launch()가 켠다
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-            root.AddComponent<Stone>();
+            var stone = root.AddComponent<Stone>();
+            var stoneSo = new SerializedObject(stone);
+            stoneSo.FindProperty("landClip").objectReferenceValue = Clip("SFX_StoneMiss");
+            stoneSo.ApplyModifiedPropertiesWithoutUndo();
 
             string path = $"{StonePrefabDir}/{name}.prefab";
             PrefabUtility.SaveAsPrefabAsset(root, path);
@@ -141,7 +150,7 @@ public static class SlingshotSceneBuilder
         handle.radius = 0.018f;
         handle.height = 0.14f;
         var slingBody = sling.AddComponent<Rigidbody>();
-        slingBody.isKinematic = true;             // 놓으면 그 자리에 떠 있게 (테스트용)
+        slingBody.isKinematic = true;             // 물리로 떨어지지 않게. 놓으면 SlingshotReturn 이 받침대로 옮긴다
         slingBody.useGravity = false;
         var slingGrab = sling.AddComponent<XRGrabInteractable>();
         slingGrab.colliders.Add(handle);          // 잡는 곳은 손잡이뿐. 자식인 주머니 콜라이더는 주머니 것
@@ -153,6 +162,11 @@ public static class SlingshotSceneBuilder
         slingGrab.smoothPositionAmount = GrabSmoothing;
         slingGrab.smoothRotation = true;
         slingGrab.smoothRotationAmount = GrabSmoothing;
+        AddAudio(sling);
+        var ret = sling.AddComponent<SlingshotReturn>();
+        var retSo = new SerializedObject(ret);
+        retSo.FindProperty("arriveClip").objectReferenceValue = Clip("SFX_SlingReturn");
+        retSo.ApplyModifiedPropertiesWithoutUndo();
 
         // 주머니: 새총의 자식. 잡아도 부모에서 떼지 않는다 (떼면 다시 한 박자 늦게 따라간다)
         var pouch = Spawn("Pouch", sling.transform, stoneLayer);
@@ -166,6 +180,7 @@ public static class SlingshotSceneBuilder
         pouchGrab.trackRotation = false;
         pouchGrab.throwOnDetach = false;
         pouchGrab.unparentTransformOnGrab = false;
+        AddAudio(pouch);
         var pouchScript = pouch.AddComponent<SlingshotPouch>();
         var so = new SerializedObject(pouchScript);
         so.FindProperty("slingshot").objectReferenceValue = sling.transform;
@@ -175,6 +190,8 @@ public static class SlingshotSceneBuilder
         var arr = so.FindProperty("stonePrefabs");
         arr.arraySize = stones.Length;
         for (int i = 0; i < stones.Length; i++) arr.GetArrayElementAtIndex(i).objectReferenceValue = stones[i];
+        so.FindProperty("stretchClip").objectReferenceValue = Clip("SFX_SlingStretch");
+        so.FindProperty("releaseClip").objectReferenceValue = Clip("SFX_SlingRelease");
         so.ApplyModifiedPropertiesWithoutUndo();
 
         // 고무줄 두 줄 (새총의 자식)
@@ -231,6 +248,7 @@ public static class SlingshotSceneBuilder
 
             var hold = new GameObject("Hold Offset").transform;
             hold.SetParent(grip.transform, false);
+            hold.localPosition = left ? HoldPositionLeft : HoldPositionRight;
             hold.localRotation = Quaternion.Euler(left ? HoldOffsetLeft : HoldOffsetRight);
 
             attach.transformToFollow = hold;
@@ -258,5 +276,17 @@ public static class SlingshotSceneBuilder
         go.layer = layer;
         foreach (Transform c in go.GetComponentsInChildren<Transform>(true)) c.gameObject.layer = layer;
         return go;
+    }
+
+    // 소리 에셋은 쓰는 순간에 경로로 불러온다 (씬을 연 뒤 예전 참조가 무효가 됐던 문제와 같은 이유)
+    static AudioClip Clip(string name) => AssetDatabase.LoadAssetAtPath<AudioClip>($"{AudioDir}/{name}.wav");
+
+    // 손 근처에서 나는 소리라 3D(거리 · 방향)로 들리게 한다
+    static void AddAudio(GameObject go)
+    {
+        var src = go.AddComponent<AudioSource>();
+        src.playOnAwake = false;
+        src.spatialBlend = 1f;
+        src.minDistance = 0.5f;
     }
 }

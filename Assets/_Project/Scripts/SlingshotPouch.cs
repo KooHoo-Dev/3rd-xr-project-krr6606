@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 //   손이 옆으로 가거나 돌아도 주머니는 새총 가운데 면을 벗어나지 않아서, 당기는 손의 좌우 떨림이 조준에 섞이지 않는다.
 // - 발사 방향 = 주머니 → 갈래 가운데, 세기 = 앞뒤로 당긴 거리 × launchPower. 손을 휘두르는 속도는 쓰지 않는다.
 // - XRI는 잡았다/놓았다만 판정한다 (Track Position · Rotation 끔, 잡을 때 부모에서 떼지 않음).
-[RequireComponent(typeof(XRGrabInteractable))]
+[RequireComponent(typeof(XRGrabInteractable), typeof(AudioSource))]
 public class SlingshotPouch : MonoBehaviour
 {
     [SerializeField] Transform slingshot;          // 새총 몸체 (+Z = 쏘는 방향)
@@ -27,8 +27,12 @@ public class SlingshotPouch : MonoBehaviour
     [SerializeField] float launchPower = 40f;      // 당긴 1 m 당 발사 속도 (m/s)
     [SerializeField] float minPull = 0.05f;        // 이보다 적게 당기면 쏘지 않음
     [SerializeField] float reloadDelay = 0.3f;
+    [Header("소리")]
+    [SerializeField] AudioClip stretchClip;        // 주머니를 잡을 때 고무줄 '끼익'
+    [SerializeField] AudioClip releaseClip;        // 쏠 때 '팅-슉'
 
     XRGrabInteractable grab;
+    AudioSource audioSource;
     Transform hand;              // 잡은 손의 잡기 기준점
     Vector2 pull;                // 부드럽게 만든 당긴 위치 (x = 높이 Y, y = 앞뒤로 당긴 거리). 새총 기준 좌표
     Vector3 hangVelocity;        // SmoothDamp가 쓰는 속도 기억
@@ -46,6 +50,7 @@ public class SlingshotPouch : MonoBehaviour
     void Awake()
     {
         grab = GetComponent<XRGrabInteractable>();
+        audioSource = GetComponent<AudioSource>();
         grab.selectEntered.AddListener(OnGrab);
         grab.selectExited.AddListener(OnRelease);
         LoadStone();
@@ -55,6 +60,7 @@ public class SlingshotPouch : MonoBehaviour
     {
         hand = args.interactorObject.GetAttachTransform(grab);
         pull = TargetPull();
+        audioSource.PlayOneShot(stretchClip);
     }
 
     // 손 위치를 새총 기준 좌표로 바꿔서 높이(Y)와 앞뒤(Z)만 쓴다. 좌우(X)는 버린다
@@ -98,6 +104,7 @@ public class SlingshotPouch : MonoBehaviour
         Stone stone = loadedStone;
         loadedStone = null;
         stone.Launch(LaunchVelocity);                    // 여기서 주머니에서 떨어져 나온다 (부모 해제)
+        audioSource.PlayOneShot(releaseClip);
         Collider col = stone.GetComponent<Collider>();
         // 주머니 · 새총 콜라이더 안에서 출발하므로 서로 부딪혀 튕기지 않게 한다 (다음 물리 계산 전에 적용됨)
         foreach (Collider c in slingshot.GetComponentsInChildren<Collider>(true)) Physics.IgnoreCollision(col, c);

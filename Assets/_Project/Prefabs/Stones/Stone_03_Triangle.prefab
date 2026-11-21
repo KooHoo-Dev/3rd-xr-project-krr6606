@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c7b605acdd82640a8a27031a0a3d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stone
+  landClip: {fileID: 8300000, guid: 825caff6dcdf2d645acd86cef00a976f, type: 3}
 --- !u!1 &1218887656386159313
 GameObject:
   m_ObjectHideFlags: 0

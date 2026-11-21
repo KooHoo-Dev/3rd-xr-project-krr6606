@@ -13,6 +13,9 @@ public class Stone : MonoBehaviour
     public bool IsThrown { get; private set; }
     public bool IsThrownSuccess { get; set; }
 
+    [SerializeField] AudioClip landClip;   // 쏜 돌이 처음 땅 · 바위에 부딪힐 때 '툭'
+    bool landed;                           // 굴러가며 여러 번 부딪혀도 한 번만 소리 낸다
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,6 +31,7 @@ public class Stone : MonoBehaviour
         GetComponent<Collider>().enabled = false;
         IsThrown = false;
         IsThrownSuccess = false;
+        landed = false;
     }
 
     // 쏠 때: 물리를 켜고 속도를 준다
@@ -40,5 +44,14 @@ public class Stone : MonoBehaviour
         GetComponent<Collider>().enabled = true;
         rb.linearVelocity = velocity;
         IsThrown = true;
+    }
+
+    // 풍선은 트리거라서 여기 오지 않는다. 처음 부딪힌 것 = 땅 · 물 · 바위
+    void OnCollisionEnter(Collision collision)
+    {
+        if (landed) return;
+        landed = true;
+        // 돌은 6초 뒤 사라지므로 돌에 AudioSource를 달지 않고, 그 자리에 잠깐 생기는 소리를 쓴다
+        AudioSource.PlayClipAtPoint(landClip, transform.position);
     }
 }

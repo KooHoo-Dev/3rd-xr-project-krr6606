@@ -167,10 +167,41 @@ def ui_click(rng):
 
 
 def miss(rng):
-    """툭: 다트가 풍선을 못 맞히고 땅 · 물에 떨어졌을 때."""
+    """툭: 돌멩이가 풍선을 못 맞히고 땅 · 물에 떨어졌을 때."""
     s = silence(0.22)
     mix(s, tone(0.16, 140, 70, decay=30), 0.0, 1.0)
     mix(s, noise(0.10, decay=45, lowpass=0.18, rng=rng), 0.0, 0.6)
+    return s
+
+
+def sling_stretch(rng):
+    """끼이익: 주머니를 잡아 고무줄을 당길 때. 음이 천천히 올라가며 거칠게 떨리는 고무 소리."""
+    sec = 0.45
+    s = silence(sec)
+    rubber = ((1, 1.0), (2, 0.45), (3, 0.25), (5, 0.1))
+    body = tone(sec, 210, 360, decay=2.5, attack=0.04, harmonics=rubber)
+    for i in range(len(body)):                      # 30Hz로 세기를 떨게 해서 '끼긱끼긱' 마찰 느낌
+        body[i] *= 0.6 + 0.4 * math.sin(TAU * 30 * i / SR) ** 2
+    mix(s, body, 0.0, 0.8)
+    mix(s, noise(sec, decay=3, attack=0.05, lowpass=0.3, highpass=0.2, rng=rng), 0.0, 0.25)
+    return s
+
+
+def sling_release(rng):
+    """팅-슉: 놓는 순간 고무줄이 튕기는 소리 + 돌이 날아가는 바람 소리."""
+    s = silence(0.5)
+    mix(s, noise(0.03, decay=120, lowpass=0.95, highpass=0.1, rng=rng), 0.0, 0.9)          # 탁 (가죽이 튕김)
+    mix(s, tone(0.22, 900, 170, decay=18, harmonics=((1, 1.0), (2, 0.3))), 0.0, 0.8)     # 팅 (고무줄 진동)
+    mix(s, noise(0.40, decay=7, attack=0.03, lowpass=0.25, highpass=0.15, rng=rng), 0.02, 0.5)  # 슉 (바람)
+    return s
+
+
+def sling_return(rng):
+    """톡: 새총이 통나무 받침대에 내려앉을 때. 정수배가 아닌 배음 = 나무 두드리는 느낌."""
+    s = silence(0.25)
+    mix(s, tone(0.18, 420, 380, decay=35, harmonics=((1, 1.0), (2.4, 0.4), (4.1, 0.15))), 0.0, 1.0)
+    mix(s, tone(0.12, 120, 80, decay=40), 0.0, 0.6)
+    mix(s, noise(0.02, decay=200, lowpass=0.7, rng=rng), 0.0, 0.3)
     return s
 
 
@@ -182,6 +213,9 @@ SOUNDS = (
     ("SFX_BalloonRise", balloon_rise, 0.60),
     ("SFX_UIClick", ui_click, 0.60),
     ("SFX_StoneMiss", miss, 0.70),
+    ("SFX_SlingStretch", sling_stretch, 0.55),
+    ("SFX_SlingRelease", sling_release, 0.80),
+    ("SFX_SlingReturn", sling_return, 0.60),
 )
 
 if __name__ == "__main__":

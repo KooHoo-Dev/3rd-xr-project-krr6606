@@ -11,6 +11,7 @@ XR 물풍선 터트리기 프로젝트를 AI(Claude)와 함께 진행하며 남�
 | [decisions/](decisions/) | 설계 결정 기록 (문제 · 선택지 · 결정 · 이유) |
 | [troubleshooting/](troubleshooting/) | 문제 해결 사례 |
 | [learning/knowledge-map.md](learning/knowledge-map.md) | 주제별 이해도 변화 |
+| [ai-collab-kit/](ai-collab-kit/) | 다음 프로젝트용 CLAUDE.md 템플릿 · 독자별 문서 작성 가이드 · 예시 (피드백으로 고쳐 나가는 중) |
 
 ## 태그로 찾기
 - `#AI리더십` — AI와 사람의 역할 분담, AI 결과 검증
